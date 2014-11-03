@@ -8,25 +8,36 @@ import java.util.StringTokenizer;
 
 public class Optimizer {
 	public static void main(String[] args) throws IOException {
-		// Set up problem
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		/*
-		 * System.out.println("Please input a comma-delimited list of numbers: ")
-		 * ; String line = br.readLine();
-		 */
-		String line = "0,0,1,5,2,-1,0,-3,1,5,-6,-2,3,6,-4,2,-3,2";
-		StringTokenizer st = new StringTokenizer(line, ",");
 		ArrayList<Integer> list = new ArrayList<Integer>();
+
+		// Read the list from input
+		list = getList();
+		// Reduce the list to alternating positive-negative numbers
+		reduce(list);
+		// Collapse all beneficial sums
+		collapse(list);
+		// Get the largest sum possible
+		int max = getMaxInList(list);
+		// Print the answer
+		System.out.println(max);
+	}
+
+	public static ArrayList<Integer> getList() throws IOException {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		// Set up problem
+		// Get the user input list
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("Please input a comma-delimited list of numbers: ");
+		String line = br.readLine();
+
+		// Tokenize the list by comma
+		StringTokenizer st = new StringTokenizer(line, ",");
 		while (st.hasMoreTokens()) {
 			list.add(Integer.parseInt(st.nextToken().trim()));
 		}
 
-		reduce(list);
-		int max = collapse(list);
-
-		System.out.println(max);
-
+		// Return the completed list
+		return list;
 	}
 
 	public static void reduce(ArrayList<Integer> list) {
@@ -64,7 +75,7 @@ public class Optimizer {
 		}
 	}
 
-	public static int collapse(ArrayList<Integer> list) {
+	public static void collapse(ArrayList<Integer> list) {
 		boolean changeMade;
 
 		do {
@@ -91,7 +102,9 @@ public class Optimizer {
 			}
 			// When no more changes are made, the list is in its minimal state
 		} while (changeMade);
+	}
 
+	private static int getMaxInList(ArrayList<Integer> list) {
 		// The largest number in this reduced list is the largest sum that can
 		// be generated
 		int max = Integer.MIN_VALUE;
